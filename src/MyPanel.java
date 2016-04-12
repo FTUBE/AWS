@@ -27,7 +27,7 @@ public class MyPanel extends JPanel {
         }
         
         for(STA s : slist){
-        	Color p = new Color((int)s.bw,0,0);
+        	Color p = new Color((int)s.bw+80,57,0);
         	page.setColor(p);
         	page.fillOval(s.x, s.y, 5, 5);
         }

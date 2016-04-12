@@ -126,9 +126,6 @@ public class window {
 		btnSta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				lblAp.setText("STA");
-				STAx.setValue(0);
-				STAy.setValue(0);
-				STAbw.setValue(0);
 				mypanel.slist.add(new STA(mypanel.slist.size()-1, 0, 0, 0));
 				mypanel.repaint();
 			}

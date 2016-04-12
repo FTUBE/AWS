@@ -80,6 +80,16 @@ public class window {
 			}
 		});
 		
+		JSpinner apcapa = new JSpinner();
+		apcapa.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				int index = (int)ApNo.getValue();
+ 				if(mypanel.clist.isEmpty() || index > mypanel.clist.size() || index <= 0) return;
+				mypanel.clist.get((int)ApNo.getValue()-1).capa = (int)apcapa.getValue();
+				mypanel.repaint();
+			}
+		});
+		
 		JSpinner APrad = new JSpinner();
 		APrad.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
@@ -93,10 +103,11 @@ public class window {
 		JButton btnNewButton = new JButton("AP");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				mypanel.clist.add(new Circle(0,0,50,mypanel.clist.size()+1));
+				mypanel.clist.add(new Circle(0,0,50,mypanel.clist.size()+1,0));
 				APx.setValue(0);
 				APy.setValue(0);
 				APrad.setValue(50);
+				apcapa.setValue(0.0);
 				mypanel.repaint();
 			}
 		});
@@ -205,12 +216,12 @@ public class window {
 		JButton btnSimthatshit = new JButton("SIMTHATSHIT");
 		btnSimthatshit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				mypanel.doshit();
 			}
 		});
 		
 		JLabel APcapa = new JLabel("APcapa:");
 		
-		JSpinner spinner = new JSpinner();
 		
 		
 		
@@ -241,7 +252,7 @@ public class window {
 												.addComponent(APx, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 												.addComponent(APy, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 												.addComponent(ApNo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-												.addComponent(spinner, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE))
+												.addComponent(apcapa, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE))
 											.addGap(74)
 											.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 												.addComponent(lblStax, Alignment.TRAILING)
@@ -314,7 +325,7 @@ public class window {
 							.addGap(18)
 							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 								.addComponent(APcapa)
-								.addComponent(spinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addComponent(apcapa, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 							.addGap(33)
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 								.addComponent(aptick)

@@ -55,14 +55,31 @@ public class window {
 				lblAp.setText("STA");
 			}
 		});
+		
 		JSpinner APx = new JSpinner();
+		APx.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				if(mypanel.clist.isEmpty()) return;
+				mypanel.clist.get(mypanel.clist.size()-1).x = (int)APx.getValue();
+				mypanel.repaint();
+			}
+		});
 		
 		JSpinner APy = new JSpinner();
+		APy.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				if(mypanel.clist.isEmpty()) return;
+				mypanel.clist.get(mypanel.clist.size()-1).y = (int)APy.getValue();
+				mypanel.repaint();
+			}
+		});
 		
 		JSpinner APrad = new JSpinner();
 		APrad.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
+				if(mypanel.clist.isEmpty()) return;
 				mypanel.clist.get(mypanel.clist.size()-1).radius = (int)APrad.getValue();
+				mypanel.repaint();
 			}
 		});
 		JButton btnNewButton = new JButton("AP");
@@ -92,33 +109,34 @@ public class window {
 		//Layout shit.
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.TRAILING)
+			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblAp)
-					.addContainerGap(1002, Short.MAX_VALUE))
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(26)
-					.addComponent(mypanel, GroupLayout.PREFERRED_SIZE, 450, GroupLayout.PREFERRED_SIZE)
+					.addGap(40)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED, 458, Short.MAX_VALUE)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(btnSta)
-								.addComponent(btnNewButton))
-							.addGap(15))
+							.addComponent(lblAp)
+							.addContainerGap())
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(50)
+							.addComponent(mypanel, GroupLayout.PREFERRED_SIZE, 450, GroupLayout.PREFERRED_SIZE)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblApx)
-								.addComponent(lblApy, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblAprad, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE))
-							.addGap(47)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(APrad, GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
-								.addComponent(APy)
-								.addComponent(APx))
-							.addGap(347))))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addPreferredGap(ComponentPlacement.RELATED, 458, Short.MAX_VALUE)
+									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addComponent(btnSta)
+										.addComponent(btnNewButton))
+									.addGap(15))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(50)
+									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addComponent(lblApx)
+										.addComponent(lblApy, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
+										.addComponent(lblAprad, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE))
+									.addGap(47)
+									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+										.addComponent(APrad, GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
+										.addComponent(APy)
+										.addComponent(APx))
+									.addGap(347))))))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -133,21 +151,20 @@ public class window {
 							.addGap(18)
 							.addComponent(btnSta)
 							.addGap(19)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-										.addComponent(lblApx)
-										.addComponent(APx, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-									.addGap(18)
-									.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-										.addComponent(lblApy)
-										.addComponent(APy, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-									.addGap(18)
-									.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-										.addComponent(lblAprad)
-										.addComponent(APrad, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-								.addComponent(lblAp, Alignment.TRAILING))))
-					.addContainerGap())
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblApx)
+								.addComponent(APx, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(18)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblApy)
+								.addComponent(APy, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(18)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblAprad)
+								.addComponent(APrad, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+					.addPreferredGap(ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+					.addComponent(lblAp)
+					.addGap(35))
 		);
 		frame.getContentPane().setLayout(groupLayout);
 	}

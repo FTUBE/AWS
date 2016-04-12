@@ -11,9 +11,13 @@ import java.awt.event.ActionEvent;
 import javax.swing.JSpinner;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+import javax.swing.JRadioButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class window {
-
+	
+	static boolean state = true;
 	private JFrame frame;
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -41,6 +45,8 @@ public class window {
 	 */
 	private void initialize() {
 		
+		//True means STA;
+		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1024, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,11 +54,18 @@ public class window {
 		JLabel lblAp = new JLabel("AP");
 		MyPanel mypanel = new MyPanel();
 		
+		JSpinner ApNo = new JSpinner();
+		
+		JLabel stano = new JLabel("STA_No.:");
+		
+		JSpinner STANo = new JSpinner();
+		
 		JSpinner APx = new JSpinner();
 		APx.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
-				if(mypanel.clist.isEmpty()) return;
-				mypanel.clist.get(mypanel.clist.size()-1).x = (int)APx.getValue();
+				int index = (int)ApNo.getValue();
+ 				if(mypanel.clist.isEmpty() || index > mypanel.clist.size() || index <= 0) return;
+				mypanel.clist.get((int)ApNo.getValue()-1).x = (int)APx.getValue();
 				mypanel.repaint();
 			}
 		});
@@ -60,8 +73,9 @@ public class window {
 		JSpinner APy = new JSpinner();
 		APy.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
-				if(mypanel.clist.isEmpty()) return;
-				mypanel.clist.get(mypanel.clist.size()-1).y = (int)APy.getValue();
+				int index = (int)ApNo.getValue();
+ 				if(mypanel.clist.isEmpty() || index > mypanel.clist.size() || index <= 0) return;
+				mypanel.clist.get((int)ApNo.getValue()-1).y = (int)APy.getValue();
 				mypanel.repaint();
 			}
 		});
@@ -69,15 +83,16 @@ public class window {
 		JSpinner APrad = new JSpinner();
 		APrad.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
-				if(mypanel.clist.isEmpty()) return;
-				mypanel.clist.get(mypanel.clist.size()-1).radius = (int)APrad.getValue();
+				int index = (int)ApNo.getValue();
+ 				if(mypanel.clist.isEmpty() || index > mypanel.clist.size() || index <= 0) return;
+				mypanel.clist.get((int)ApNo.getValue()-1).radius = (int)APrad.getValue();
 				mypanel.repaint();
 			}
 		});
+		
 		JButton btnNewButton = new JButton("AP");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				lblAp.setText("AP");
 				mypanel.clist.add(new Circle(0,0,50,mypanel.clist.size()+1));
 				APx.setValue(0);
 				APy.setValue(0);
@@ -95,8 +110,9 @@ public class window {
 		JSpinner STAbw = new JSpinner();
 		STAbw.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
-				if(mypanel.slist.isEmpty()) return;
-				STA s = mypanel.slist.get(mypanel.slist.size()-1);
+				int index = (int) STANo.getValue();
+				if(mypanel.slist.isEmpty() || index > mypanel.slist.size() || index <= 0) return;
+				STA s = mypanel.slist.get((int)STANo.getValue()-1);
 				s.bw = (int) STAbw.getValue();
 				mypanel.repaint();
 			}
@@ -105,8 +121,9 @@ public class window {
 		JSpinner STAy = new JSpinner();
 		STAy.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
-				if(mypanel.slist.isEmpty()) return;
-				STA s = mypanel.slist.get(mypanel.slist.size()-1);
+				int index = (int) STANo.getValue();
+				if(mypanel.slist.isEmpty() || index > mypanel.slist.size() || index <= 0) return;
+				STA s = mypanel.slist.get((int)STANo.getValue()-1);
 				s.y = (int) STAy.getValue();
 				mypanel.repaint();
 			}
@@ -115,8 +132,9 @@ public class window {
 		JSpinner STAx = new JSpinner();
 		STAx.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
-				if(mypanel.slist.isEmpty()) return;
-				STA s = mypanel.slist.get(mypanel.slist.size()-1);
+				int index = (int) STANo.getValue();
+				if(mypanel.slist.isEmpty() || index > mypanel.slist.size() || index <= 0) return;
+				STA s = mypanel.slist.get((int)STANo.getValue()-1);
 				s.x = (int) STAx.getValue();
 				mypanel.repaint();
 			}
@@ -125,8 +143,7 @@ public class window {
 		JButton btnSta = new JButton("STA");
 		btnSta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				lblAp.setText("STA");
-				mypanel.slist.add(new STA(mypanel.slist.size()-1, 0, 0, 0));
+				mypanel.slist.add(new STA(mypanel.slist.size()+1, 0, 0, 0));
 				mypanel.repaint();
 			}
 		});
@@ -137,6 +154,65 @@ public class window {
 		
 		JLabel lblStabw = new JLabel("STAbw:");
 		
+		JLabel lblApno = new JLabel("AP_No.:");
+		
+		JRadioButton statick = new JRadioButton("STA");		
+		JRadioButton aptick = new JRadioButton("AP");
+		aptick.setSelected(true);
+		
+		aptick.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				state = true;
+				statick.setSelected(false);
+				aptick.setSelected(true);
+				lblAp.setText("AP");
+			}
+		});
+		
+		statick.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				state = false;
+				aptick.setSelected(false);
+				statick.setSelected(true);
+				lblAp.setText("STA");
+			}
+		});
+		//
+		mypanel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int x = e.getX();
+				int y = e.getY();
+				if(state){
+					int index = (int) ApNo.getValue();
+					if(index <= 0 || index > mypanel.clist.size()) return;
+					Circle s = mypanel.clist.get(index-1);
+					s.x = x-s.radius;
+					s.y = y-s.radius;
+					//System.out.println(x + " "+ y);
+					mypanel.repaint();
+					return;
+				}
+				int index = (int) STANo.getValue();
+				if(index <= 0 || index > mypanel.slist.size()) return;
+				STA c = mypanel.slist.get(index-1);
+				c.x = x-5;
+				c.y = y-5;
+				mypanel.repaint();
+			}
+		});
+		
+		JButton btnSimthatshit = new JButton("SIMTHATSHIT");
+		btnSimthatshit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		
+		JLabel APcapa = new JLabel("APcapa:");
+		
+		JSpinner spinner = new JSpinner();
+		
+		
 		
 		//Layout shit.
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
@@ -145,40 +221,58 @@ public class window {
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(40)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblAp)
-							.addContainerGap())
+						.addComponent(lblAp)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(mypanel, GroupLayout.PREFERRED_SIZE, 450, GroupLayout.PREFERRED_SIZE)
+							.addGap(50)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(APcapa, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
 								.addGroup(groupLayout.createSequentialGroup()
-									.addPreferredGap(ComponentPlacement.RELATED, 458, Short.MAX_VALUE)
-									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addComponent(btnSta)
-										.addComponent(btnNewButton))
-									.addGap(15))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(50)
-									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
 										.addComponent(lblApx)
 										.addComponent(lblApy, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblAprad, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE))
-									.addGap(47)
+										.addComponent(lblAprad, GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
+										.addComponent(lblApno, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
 									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-										.addComponent(APrad, GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
-										.addComponent(APy)
-										.addComponent(APx))
-									.addGap(74)
-									.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-										.addComponent(lblStax)
-										.addComponent(lblStay)
-										.addComponent(lblStabw))
+										.addGroup(groupLayout.createSequentialGroup()
+											.addGap(47)
+											.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+												.addComponent(APrad, GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
+												.addComponent(APx, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addComponent(APy, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addComponent(ApNo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addComponent(spinner, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE))
+											.addGap(74)
+											.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+												.addComponent(lblStax, Alignment.TRAILING)
+												.addComponent(lblStay, Alignment.TRAILING)
+												.addComponent(lblStabw, Alignment.TRAILING)
+												.addComponent(stano, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)))
+										.addGroup(groupLayout.createSequentialGroup()
+											.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(aptick)
+											.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+											.addComponent(btnSimthatshit)))
 									.addGap(18)
 									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-										.addComponent(STAbw, GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
-										.addComponent(STAy)
-										.addComponent(STAx))
-									.addGap(153))))))
+										.addGroup(groupLayout.createSequentialGroup()
+											.addComponent(STAbw, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
+											.addGap(153))
+										.addGroup(groupLayout.createSequentialGroup()
+											.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+												.addComponent(STAy, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
+												.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+													.addComponent(STAx, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
+													.addComponent(STANo, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)))
+											.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+											.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+												.addComponent(btnSta)
+												.addComponent(btnNewButton))
+											.addGap(15))))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(57)
+									.addComponent(statick)))))
+					.addGap(15))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -189,9 +283,16 @@ public class window {
 							.addComponent(mypanel, GroupLayout.PREFERRED_SIZE, 450, GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addContainerGap()
-							.addComponent(btnNewButton)
-							.addGap(18)
-							.addComponent(btnSta)
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(btnNewButton)
+									.addGap(18)
+									.addComponent(btnSta))
+								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+									.addComponent(lblApno)
+									.addComponent(stano)
+									.addComponent(STANo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addComponent(ApNo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 							.addGap(19)
 							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 								.addComponent(lblApx)
@@ -209,7 +310,17 @@ public class window {
 								.addComponent(lblAprad)
 								.addComponent(APrad, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addComponent(STAbw, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblStabw))))
+								.addComponent(lblStabw))
+							.addGap(18)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(APcapa)
+								.addComponent(spinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(33)
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+								.addComponent(aptick)
+								.addComponent(btnSimthatshit))
+							.addGap(33)
+							.addComponent(statick)))
 					.addPreferredGap(ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
 					.addComponent(lblAp)
 					.addGap(35))

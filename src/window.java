@@ -211,17 +211,14 @@ public class window {
 				STA c = mypanel.slist.get(index-1);
 				c.x = x-5;
 				c.y = y-5;
+				STAx.setValue(c.x);
+				STAy.setValue(c.y);
 				
 				mypanel.doshit();
 			}
 		});
 		
 		JButton btnSimthatshit = new JButton("SIMTHATSHIT");
-		btnSimthatshit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				mypanel.doshit();
-			}
-		});
 		
 		JLabel APcapa = new JLabel("APcapa:");
 		

@@ -13,6 +13,7 @@ public class MyPanel extends JPanel {
 	
 	ArrayList<Circle> clist;
 	ArrayList<STA> slist;
+	ArrayList<Set<Integer>> avail = new ArrayList<Set<Integer>>();
 	
 	static enum state{AP,STA,LINE,ALL,NONE};
 	
@@ -35,7 +36,7 @@ public class MyPanel extends JPanel {
         
         	for(int i = 0; i < slist.size();i++){
         		for(int j = 0; j < clist.size();j++){
-        			if(conn[i][j] == 1){
+        			if(matrix[i][j] == 1){
         				STA s = slist.get(i);
         				Circle c = clist.get(j);
         				page.setColor(Color.RED);
@@ -76,10 +77,14 @@ public class MyPanel extends JPanel {
 			}
 		}
 		
-		if(isstateChanged()) System.out.println("Changed");
+		if(isstateChanged()) recalculate();
 		
 		repaint();
 }
+
+	private void recalculate() {
+		traverse(0,int[] residue,new ArrayList<Integer>());
+	}
 
 	private boolean isstateChanged() {
 		boolean changed = false;
@@ -106,5 +111,24 @@ public class MyPanel extends JPanel {
 		int py = s.y;
 		if((Math.pow(py-cy,2) + Math.pow(px-cx,2)) > Math.pow(c.radius,2)) return false;
 		return true;
+	}
+	
+	public void traverse(int sta,int[] residue,ArrayList<Integer> result){
+		
+		if(sta == slist.size()){
+			for(int r : result) System.out.println(r+" ");
+			return;
+		}
+		
+		for(int ap : avail.get(sta)){
+			if(residue[ap] - slist.get(sta).bw<0)//Threshold limit goes here.
+				continue;
+			residue[ap] -= slist.get(sta).bw;
+			result.add(ap);
+			traverse(sta+1,residue,result);
+			residue[ap] += slist.get(sta).bw;
+			result.remove(result.size()-1);
+		}
+		
 	}
 }

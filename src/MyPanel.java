@@ -91,6 +91,7 @@ public class MyPanel extends JPanel {
 	private void recalculate() {
 		
 		initTotal();
+		cleanmatrix();
 		mindiv = Double.MAX_VALUE;
 		strategy.clear();
 		
@@ -104,11 +105,16 @@ public class MyPanel extends JPanel {
 		//System.out.println("");
 		availUpdate();
 		traverse(0,residue,new ArrayList<Integer>());
-		System.out.println("Best Strategy : ");
-		for(int i : this.strategy){
-			System.out.print(i);
+		
+		if(strategy.isEmpty()) {
+			System.out.println("No solution.");
+			return;
 		}
-		System.out.println("\n Which gives div = " + mindiv);
+		
+		System.out.println("Best Strategy gives a minimum div = "+mindiv);
+		for(int i = 0; i < strategy.size();i++){
+			matrix[i][strategy.get(i)] = 1;
+		}
 		/*System.out.println("=====Strategy=====");
 		for(ArrayList<Integer> l : strategy){
 			System.out.println("=====Some=====");

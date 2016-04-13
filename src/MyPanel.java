@@ -60,6 +60,7 @@ public class MyPanel extends JPanel {
         
         for(STA s : slist){
         	Color p = new Color((int)s.bw+80,57,0);
+        	page.drawString(""+s.no, s.x+7, s.y-1);
         	page.setColor(p);
         	page.fillOval(s.x, s.y, 10, 10);
         }
@@ -216,7 +217,7 @@ public class MyPanel extends JPanel {
 			toret += Math.pow(i-avg,2);
 		}
 		
-		toret = Math.sqrt(toret)/size;
+		toret = Math.sqrt(toret/size);
 		
 		return toret;
 	}

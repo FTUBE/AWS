@@ -4,7 +4,9 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JPanel;
@@ -14,6 +16,11 @@ public class MyPanel extends JPanel {
 	ArrayList<Circle> clist;
 	ArrayList<STA> slist;
 	ArrayList<Set<Integer>> avail = new ArrayList<Set<Integer>>();
+	int[] total = null;
+	
+	double mindiv = Double.MAX_VALUE;
+	ArrayList<Integer> strategy = new ArrayList<Integer>();
+	//Set<ArrayList<Integer>> strategy = new HashSet<ArrayList<Integer>>();
 	
 	static enum state{AP,STA,LINE,ALL,NONE};
 	
@@ -62,14 +69,13 @@ public class MyPanel extends JPanel {
     
 	public void doshit() {
 		//cleanmatrix();
-		
+
 		for(STA s : slist){
 			//ArrayList<Integer> res = new ArrayList<Integer>();
 			//System.out.print("STA "+ s.no + " can connect to AP");
 			for(Circle c : clist){
 				if(checkyoupriv(c, s)) {
 				conn[s.no-1][c.no-1] = 1;
-				//System.out.print(" "+c.no);
 				}
 				else{
 				conn[s.no-1][c.no-1] = 0;
@@ -83,9 +89,54 @@ public class MyPanel extends JPanel {
 }
 
 	private void recalculate() {
-		traverse(0,int[] residue,new ArrayList<Integer>());
+		
+		initTotal();
+		mindiv = Double.MAX_VALUE;
+		strategy.clear();
+		
+		//strategy.clear();
+		int[] residue= new int[clist.size()];
+		//System.out.println("Residue : ");
+		for(Circle c : clist) {
+			residue[c.no-1] = c.capa;
+			//System.out.print(c.capa+" ");
+		}
+		//System.out.println("");
+		availUpdate();
+		traverse(0,residue,new ArrayList<Integer>());
+		System.out.println("Best Strategy : ");
+		for(int i : this.strategy){
+			System.out.print(i);
+		}
+		System.out.println("\n Which gives div = " + mindiv);
+		/*System.out.println("=====Strategy=====");
+		for(ArrayList<Integer> l : strategy){
+			System.out.println("=====Some=====");
+			for(int i : l){
+				System.out.print(i+" ");
+			}
+			System.out.println("\n==============");
+		}
+		System.out.println("==================");*/
 	}
 
+	private void initTotal() {
+		total = new int[clist.size()];
+		for(int i = 0; i < clist.size();i++){
+			total[i] = clist.get(i).capa;
+		}
+	}
+
+	private void availUpdate(){
+		avail.clear();
+		for(int i = 0; i < slist.size();i++){
+			Set<Integer> s = new HashSet<Integer>();
+			for(int j = 0; j < clist.size();j++){
+				if(conn[i][j] != 0)s.add(j);
+			}
+			avail.add(s);
+		}
+	}
 	private boolean isstateChanged() {
 		boolean changed = false;
 		for(int i = 0 ; i < slist.size();i++){
@@ -116,11 +167,23 @@ public class MyPanel extends JPanel {
 	public void traverse(int sta,int[] residue,ArrayList<Integer> result){
 		
 		if(sta == slist.size()){
-			for(int r : result) System.out.println(r+" ");
+			
+			int[] use = new int[clist.size()];
+
+			for(int i = 0; i < residue.length;i++){
+				use[i] = total[i] - residue[i];
+			}
+			
+			double cur_div = calculatediv(use);
+			if(cur_div > mindiv) return;
+			mindiv = cur_div;
+			strategy = (ArrayList<Integer>)result.clone();
+			//strategy.add((ArrayList<Integer>)result.clone());
 			return;
 		}
 		
 		for(int ap : avail.get(sta)){
+			
 			if(residue[ap] - slist.get(sta).bw<0)//Threshold limit goes here.
 				continue;
 			residue[ap] -= slist.get(sta).bw;
@@ -128,7 +191,27 @@ public class MyPanel extends JPanel {
 			traverse(sta+1,residue,result);
 			residue[ap] += slist.get(sta).bw;
 			result.remove(result.size()-1);
+			
 		}
 		
+	}
+
+	private double calculatediv(int[] result) {
+		
+		double avg = 0, sum = 0, size = result.length,toret = 0;
+
+		for(int i : result){
+			sum +=i;
+		}
+		
+		avg = sum/size;
+		
+		for(int i : result){
+			toret += Math.pow(i-avg,2);
+		}
+		
+		toret = Math.sqrt(toret)/size;
+		
+		return toret;
 	}
 }

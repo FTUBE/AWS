@@ -66,7 +66,7 @@ public class window {
 				int index = (int)ApNo.getValue();
  				if(mypanel.clist.isEmpty() || index > mypanel.clist.size() || index <= 0) return;
 				mypanel.clist.get((int)ApNo.getValue()-1).x = (int)APx.getValue();
-				mypanel.repaint();
+				mypanel.doshit();
 			}
 		});
 		
@@ -76,7 +76,7 @@ public class window {
 				int index = (int)ApNo.getValue();
  				if(mypanel.clist.isEmpty() || index > mypanel.clist.size() || index <= 0) return;
 				mypanel.clist.get((int)ApNo.getValue()-1).y = (int)APy.getValue();
-				mypanel.repaint();
+				mypanel.doshit();
 			}
 		});
 		
@@ -86,7 +86,7 @@ public class window {
 				int index = (int)ApNo.getValue();
  				if(mypanel.clist.isEmpty() || index > mypanel.clist.size() || index <= 0) return;
 				mypanel.clist.get((int)ApNo.getValue()-1).capa = (int)apcapa.getValue();
-				mypanel.repaint();
+				mypanel.doshit();
 			}
 		});
 		
@@ -96,7 +96,7 @@ public class window {
 				int index = (int)ApNo.getValue();
  				if(mypanel.clist.isEmpty() || index > mypanel.clist.size() || index <= 0) return;
 				mypanel.clist.get((int)ApNo.getValue()-1).radius = (int)APrad.getValue();
-				mypanel.repaint();
+				mypanel.doshit();
 			}
 		});
 		
@@ -108,7 +108,7 @@ public class window {
 				APy.setValue(0);
 				APrad.setValue(50);
 				apcapa.setValue(0.0);
-				mypanel.repaint();
+				mypanel.doshit();
 			}
 		});
 		
@@ -125,7 +125,7 @@ public class window {
 				if(mypanel.slist.isEmpty() || index > mypanel.slist.size() || index <= 0) return;
 				STA s = mypanel.slist.get((int)STANo.getValue()-1);
 				s.bw = (int) STAbw.getValue();
-				mypanel.repaint();
+				mypanel.doshit();
 			}
 		});
 		
@@ -136,7 +136,7 @@ public class window {
 				if(mypanel.slist.isEmpty() || index > mypanel.slist.size() || index <= 0) return;
 				STA s = mypanel.slist.get((int)STANo.getValue()-1);
 				s.y = (int) STAy.getValue();
-				mypanel.repaint();
+				mypanel.doshit();
 			}
 		});
 		
@@ -147,7 +147,7 @@ public class window {
 				if(mypanel.slist.isEmpty() || index > mypanel.slist.size() || index <= 0) return;
 				STA s = mypanel.slist.get((int)STANo.getValue()-1);
 				s.x = (int) STAx.getValue();
-				mypanel.repaint();
+				mypanel.doshit();
 			}
 		});
 		
@@ -155,7 +155,7 @@ public class window {
 		btnSta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				mypanel.slist.add(new STA(mypanel.slist.size()+1, 0, 0, 0));
-				mypanel.repaint();
+				mypanel.doshit();
 			}
 		});
 		
@@ -201,7 +201,7 @@ public class window {
 					s.x = x-s.radius;
 					s.y = y-s.radius;
 					//System.out.println(x + " "+ y);
-					mypanel.repaint();
+					mypanel.doshit();
 					return;
 				}
 				int index = (int) STANo.getValue();
@@ -209,7 +209,7 @@ public class window {
 				STA c = mypanel.slist.get(index-1);
 				c.x = x-5;
 				c.y = y-5;
-				mypanel.repaint();
+				mypanel.doshit();
 			}
 		});
 		

@@ -18,6 +18,8 @@ public class MyPanel extends JPanel {
 	
 	state cur = state.NONE;
 	int[][] matrix = new int[99][99];
+	int[][] conn = new int[99][99];
+	int[][] prev = new int[99][99];
 	
     MyPanel()
     {
@@ -33,11 +35,10 @@ public class MyPanel extends JPanel {
         
         	for(int i = 0; i < slist.size();i++){
         		for(int j = 0; j < clist.size();j++){
-        			if(matrix[i][j] == 1){
+        			if(conn[i][j] == 1){
         				STA s = slist.get(i);
         				Circle c = clist.get(j);
         				page.setColor(Color.RED);
-        		
         				page.drawLine(s.x+5, s.y+5, c.x+c.radius, c.y+c.radius);
         			}
         		}
@@ -57,27 +58,38 @@ public class MyPanel extends JPanel {
 
     }
 
+    
 	public void doshit() {
-		cleanmatrix();
+		//cleanmatrix();
+		for(Circle c: clist) System.out.println(c.x);
 		for(STA s : slist){
-			ArrayList<Integer> res = new ArrayList<Integer>();
-			System.out.print("STA "+ s.no + " can connect to AP");
+			//ArrayList<Integer> res = new ArrayList<Integer>();
+			//System.out.print("STA "+ s.no + " can connect to AP");
 			for(Circle c : clist){
 				if(checkyoupriv(c, s)) {
-				res.add(c.no); 
+				conn[s.no-1][c.no-1] = 1;
 				//System.out.print(" "+c.no);
 				}
+				else{
+				conn[s.no-1][c.no-1] = 0;
+				}
 			}
-			if(res.isEmpty())continue;
-			int s_no = s.no-1;
-			int c_no = res.get(0)-1;
-			matrix[s_no][c_no] = 1;			
 		}
+		if(isstateChanged()) System.out.println("Changed");
 		
-		//cur = state.LINE;
 		repaint();
-		
 }
+
+	private boolean isstateChanged() {
+		boolean changed = false;
+		for(int i = 0 ; i < slist.size();i++){
+			for(int j = 0; j < clist.size();j++){
+				if(conn[i][j] != prev[i][j]) changed = true;
+				prev[i][j] = conn[i][j];
+			}
+		}
+		return changed;
+	}
 
 	private void cleanmatrix() {
 		for(int i = 0; i < slist.size();i++){

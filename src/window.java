@@ -65,7 +65,8 @@ public class window {
 			public void stateChanged(ChangeEvent e) {
 				int index = (int)ApNo.getValue();
  				if(mypanel.clist.isEmpty() || index > mypanel.clist.size() || index <= 0) return;
-				mypanel.clist.get((int)ApNo.getValue()-1).x = (int)APx.getValue();
+ 				Circle c = mypanel.clist.get(index-1);
+				c.x = (int)APx.getValue();
 				mypanel.doshit();
 			}
 		});
@@ -75,7 +76,8 @@ public class window {
 			public void stateChanged(ChangeEvent e) {
 				int index = (int)ApNo.getValue();
  				if(mypanel.clist.isEmpty() || index > mypanel.clist.size() || index <= 0) return;
-				mypanel.clist.get((int)ApNo.getValue()-1).y = (int)APy.getValue();
+ 				Circle c = mypanel.clist.get(index-1);
+				c.y = (int)APy.getValue();
 				mypanel.doshit();
 			}
 		});
@@ -85,7 +87,8 @@ public class window {
 			public void stateChanged(ChangeEvent e) {
 				int index = (int)ApNo.getValue();
  				if(mypanel.clist.isEmpty() || index > mypanel.clist.size() || index <= 0) return;
-				mypanel.clist.get((int)ApNo.getValue()-1).capa = (int)apcapa.getValue();
+ 				Circle c = mypanel.clist.get(index-1);
+				c.capa = (int)apcapa.getValue();
 				mypanel.doshit();
 			}
 		});
@@ -95,7 +98,8 @@ public class window {
 			public void stateChanged(ChangeEvent e) {
 				int index = (int)ApNo.getValue();
  				if(mypanel.clist.isEmpty() || index > mypanel.clist.size() || index <= 0) return;
-				mypanel.clist.get((int)ApNo.getValue()-1).radius = (int)APrad.getValue();
+ 				Circle c = mypanel.clist.get(index-1);
+				c.radius = (int)APrad.getValue();
 				mypanel.doshit();
 			}
 		});
@@ -104,10 +108,6 @@ public class window {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				mypanel.clist.add(new Circle(0,0,50,mypanel.clist.size()+1,0));
-				APx.setValue(0);
-				APy.setValue(0);
-				APrad.setValue(50);
-				apcapa.setValue(0.0);
 				mypanel.doshit();
 			}
 		});
@@ -200,6 +200,8 @@ public class window {
 					Circle s = mypanel.clist.get(index-1);
 					s.x = x-s.radius;
 					s.y = y-s.radius;
+					APx.setValue(s.x);
+					APy.setValue(s.y);
 					//System.out.println(x + " "+ y);
 					mypanel.doshit();
 					return;
@@ -209,6 +211,7 @@ public class window {
 				STA c = mypanel.slist.get(index-1);
 				c.x = x-5;
 				c.y = y-5;
+				
 				mypanel.doshit();
 			}
 		});

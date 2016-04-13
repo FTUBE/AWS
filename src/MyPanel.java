@@ -61,7 +61,7 @@ public class MyPanel extends JPanel {
     
 	public void doshit() {
 		//cleanmatrix();
-		for(Circle c: clist) System.out.println(c.x);
+		
 		for(STA s : slist){
 			//ArrayList<Integer> res = new ArrayList<Integer>();
 			//System.out.print("STA "+ s.no + " can connect to AP");
@@ -75,6 +75,7 @@ public class MyPanel extends JPanel {
 				}
 			}
 		}
+		
 		if(isstateChanged()) System.out.println("Changed");
 		
 		repaint();

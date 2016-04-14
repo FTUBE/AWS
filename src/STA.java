@@ -12,7 +12,7 @@ public class STA {
 		double jpy = 172044.00;
 		double rmb = 10337.37;
 		double base = 100;//
-		double get = 1681.21;//
+		double get = 1680.59;//
 		double rate_prev = jpy/rmb;
 		double rate_cur = get/base;
 		
